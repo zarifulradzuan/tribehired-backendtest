@@ -1,14 +1,15 @@
 package com.backendtest.api.controller;
 
+import com.backendtest.api.constants.ControllerConstants;
 import com.backendtest.dto.model.CommentDTO;
 import com.backendtest.dto.model.PostDTO;
 import com.backendtest.dto.response.PostResponseDTO;
 import com.backendtest.serviceimpl.InternalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.*;
-
-import com.backendtest.api.constants.ControllerConstants;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
 import java.util.HashMap;
