@@ -19,7 +19,7 @@ public class SearchController {
     @Autowired
     InternalServiceImpl internalServiceImpl;
 
-    @GetMapping(path = ControllerConstants.SEARCH, produces = {"application/json"})
+    @GetMapping(path = ControllerConstants.SEARCH)
     public SearchResponseDTO searchComments(
             @RequestParam("post") int postId,
             @RequestParam("q") String keyword

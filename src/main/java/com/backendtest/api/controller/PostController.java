@@ -38,7 +38,7 @@ public class PostController {
         return postResponseDTO;
     }
 
-    @GetMapping(path = ControllerConstants.SORT, produces = { "application/json" })
+    @GetMapping(path = ControllerConstants.SORT)
     public PostResponseDTO getSortedPosts(@RequestParam("by") String type) {
         PostResponseDTO postResponseDTO = new PostResponseDTO();
         List<PostDTO> posts;
