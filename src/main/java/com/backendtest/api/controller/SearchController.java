@@ -4,16 +4,13 @@ import com.backendtest.api.constants.ControllerConstants;
 import com.backendtest.dto.model.CommentDTO;
 import com.backendtest.dto.response.SearchResponseDTO;
 import com.backendtest.serviceimpl.InternalServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,7 +23,7 @@ public class SearchController {
     public SearchResponseDTO searchComments(
             @RequestParam("post") int postId,
             @RequestParam("q") String keyword
-    ) throws JSONException, JsonProcessingException {
+    ) {
         SearchResponseDTO searchResponseDTO = new SearchResponseDTO();
         List<CommentDTO> comments;
         try {
@@ -37,22 +34,10 @@ public class SearchController {
             return searchResponseDTO;
         }
         if (comments.size() > 0) {
-            List<CommentDTO> commentsFiltered = new ArrayList<>();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JSONArray fieldNames = new JSONObject(objectMapper.writeValueAsString(comments.get(0))).names(); //convert comment dto into json to get its field names
-
-        for (CommentDTO commentDTO : comments) {
-            if (commentDTO.getPostId() == postId) {
-                JSONObject commentJsn = new JSONObject(objectMapper.writeValueAsString(commentDTO)); //convert comment into json to enable using strings to fetch values
-
-                for (int i = 0; i < fieldNames.length(); ++i) { //iterate through fields
-                    if (commentJsn.getString(fieldNames.getString(i)).contains(keyword)){ //check values for keyword
-                        commentsFiltered.add(commentDTO);
-                        break;
-                    }
-                }
-            }
-        }
+            List<CommentDTO> commentsFiltered = comments.stream()
+                    .filter(e -> e.getPostId() == postId)
+                    .filter(e -> e.toString().contains(keyword))
+                    .collect(Collectors.toList());
             searchResponseDTO.setResult(true);
             searchResponseDTO.setComments(commentsFiltered);
             return searchResponseDTO;
