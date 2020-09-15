@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping(path = ControllerConstants.POSTS)
@@ -44,7 +43,6 @@ public class PostController {
         PostResponseDTO postResponseDTO = new PostResponseDTO();
         List<PostDTO> posts;
         List<CommentDTO> comments;
-        Random random = new Random();
         try {
             posts = internalServiceImpl.getPosts(); //get posts from API
             comments = internalServiceImpl.getComments(); //get comments from API
@@ -58,7 +56,7 @@ public class PostController {
             HashMap<Integer, Integer> postCommentsNumber = new HashMap<>();
             for (CommentDTO comment : comments) {
                 postCommentsNumber.put(
-                        comment.getPostId(), postCommentsNumber.getOrDefault(comment.getPostId(), 0) + random.nextInt(5) //count comments for every unique post id
+                        comment.getPostId(), postCommentsNumber.getOrDefault(comment.getPostId(), 0) + 1 //count comments for every unique post id
                 );
             }
             for (PostDTO post : posts) {
